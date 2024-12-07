@@ -2,7 +2,7 @@ cwlVersion: v1.0
 class: Workflow
 id: estimate_contamination_wf
 requirements:
-  ScatterFeatureRequirement: {}
+  - class: ScatterFeatureRequirement: {}
 
 inputs:
   input_directory:

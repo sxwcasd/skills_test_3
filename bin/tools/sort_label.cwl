@@ -1,25 +1,26 @@
 cwlVersion: v1.0
 class: CommandLineTool
-id: sort pcs
+id: bwa_record_se
 requirements:
   - class: InlineJavascriptRequirement
   - class: ShellCommandRequirement
 
 inputs:
-  ref_pcs:
+  ref_labels:
     type: File
     inputBinding:
       prefix: -k1
       position: 1
 
 outputs:
-  sorted_pcs:
+  sorted_label:
     type: File
     outputBinding:
-      glob: $(inputs.ref_pcs.nameroot + ".sorted.txt")
+      glob: $(inputs.ref_labels.nameroot + "_sorted.txt")
 
 baseCommand: [sort]
 arguments:
-  - valueFrom: $(inputs.ref_pcs.nameroot + ".sorted.txt")
-    prefix: -o
-    separate: true
+  - valueFrom: $(inputs.ref_labels.nameroot + "_sorted.txt")
+    shellQuote: false
+    prefix: "| cut -f2 >"
+    position: 2

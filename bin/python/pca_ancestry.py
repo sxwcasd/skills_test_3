@@ -1,5 +1,10 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import argparse
+import pandas as pd
+
+def connect_ancestry_ref(ancestries, ref):
+    ref_df = pd.read_csv(ref, sep="\t") 
 
 # Scatter plot function
 def scatter_plot_pc(reference, labels, study, figure_name, pc_x, pc_y, ax=None):
@@ -50,3 +55,14 @@ scatter_plot_pc3d(reference, population_labels, study, "PC1 vs PC2 vs PC3", 0, 1
 plt.tight_layout()
 plt.show()
 
+def main():
+    parser = argparse.ArgumentParser(description="Process an array of files.")
+    parser.add_argument("--ancestry_pcs", required=True, help="Comma-separated list of ancestry pcs path")
+    parser.add_argument("--merged_refs", required=True, help="merged 1000 genome reference file")
+    args = parser.parse_args()
+
+    ancestry_list = args.ancestry_pcs.split(",")
+    ref = args.merged_refs()
+
+if __name__ == "__main__":
+    main()
