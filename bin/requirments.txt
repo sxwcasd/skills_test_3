@@ -1,3 +1,4 @@
 pandas
 matplotlib==3.9.3
 scikit-learn==1.5.2
+cwltool==3.1.20230213100550
