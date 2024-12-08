@@ -1,0 +1,19 @@
+{
+  "individual_cram":{
+    "class": "File",
+    "path":"/mnt/SCRATCH/linghao/cerc_assignment/skills_test_3/input/HGDP01310.GRCh38.low_coverage.cram",
+    "secondaryFiles": [
+      {
+        "class": "File",
+        "path":"/mnt/SCRATCH/linghao/cerc_assignment/skills_test_3/input/HGDP01310.GRCh38.low_coverage.cram.crai"
+      }
+    ]
+  },
+  "svd_prefix":"/mnt/SCRATCH/linghao/cerc_assignment/VerifyBamID/resource/1000g.phase3.100k.b38.vcf.gz.dat",
+  "reference": {
+    "class": "File",
+    "path": "/mnt/SCRATCH/linghao/cerc_assignment/skill_test_3_linghao/data/GRCh38_full_analysis_set_plus_decoy_hla.fa"
+  },
+  "pc_number": 4
+}
+

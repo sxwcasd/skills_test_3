@@ -1,0 +1,11 @@
+{
+  "individual_contamination": [{
+    "class": "File",
+    "path": "/mnt/SCRATCH/linghao/cerc_assignment/skill_test_3_linghao/test/z0inaajh.selfSM"
+  },{ 
+    "class": "File",
+    "path": "/mnt/SCRATCH/linghao/cerc_assignment/skill_test_3_linghao/test/22_w83pv.selfSM"
+  }
+  ],
+  "output_file": "Contamination.txt"
+}
