@@ -1,17 +1,10 @@
-# Use an official Python image as the base image
-FROM python:3.9-slim
-USER root
-# Set the working directory inside the container
-WORKDIR /app
+FROM python:3.9 as builder
 
-# Copy the requirements file to the container (optional if you prefer specifying packages here)
-COPY /mnt/SCRATCH/linghao/cerc_assignment/skills_test_3_linghao/bin/requirements.txt .
+COPY ./ /opt
 
-# Install the required Python packages
-RUN pip install --no-cache-dir -r requirements.txt
+WORKDIR /opt
 
-# Optionally, copy your application code to the container
-# COPY . .
+COPY ./requirements.txt /opt/
 
-# Command to keep the container running (replace with your app's start command if needed)
-CMD ["python3"]
+RUN pip install --upgrade pip \
+        && pip install --no-deps -r requirements.txt
