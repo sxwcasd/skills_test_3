@@ -1,6 +1,6 @@
 cwlVersion: v1.0
 class: CommandLineTool
-id: sort pcs
+id: sort_pcs
 requirements:
   - class: InlineJavascriptRequirement
   - class: ShellCommandRequirement

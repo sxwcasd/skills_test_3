@@ -1,5 +1,6 @@
 class: CommandLineTool
 cwlVersion: v1.0
+id: verify_bam_id_cram 
 requirements:
   - class: ShellCommandRequirement
   - class: InlineJavascriptRequirement

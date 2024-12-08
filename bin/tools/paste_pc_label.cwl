@@ -1,6 +1,6 @@
 cwlVersion: v1.0
 class: CommandLineTool
-id: bwa_record_se
+id: paste pc and label 
 requirements:
   - class: InlineJavascriptRequirement
   - class: ShellCommandRequirement

@@ -1,60 +1,96 @@
-import matplotlib.pyplot as plt
 import numpy as np
 import argparse
 import pandas as pd
+import matplotlib.pyplot as plt
 
+#extract file rootname from path
+def get_nameroot(filename):
+    return str(filename.split('/')[-1].split('.')[0])
+
+#reformat sample ancestries df and get ready to merge
+def process_sample_pcs(filename):
+    df = pd.read_csv(filename, sep="\t")
+    df = df["IntendedSample"].to_frame().T
+    df.columns = ["PC1","PC2","PC3","PC4"]
+    df["sample_name"] = get_nameroot(filename)
+    df["label"] = "Study"
+    return df
+
+# merge reference df with all sample ancestries
 def connect_ancestry_ref(ancestries, ref):
-    ref_df = pd.read_csv(ref, sep="\t") 
+    ref_df = pd.read_csv(ref, sep="\t", names=["sample_name","PC1","PC2","PC3","PC4","label"])
+    sample_df_lst = [ref_df]
+    for ancestry in ancestries:
+        df = process_sample_pcs(ancestry)
+        sample_df_lst.append(df)
+
+    merged_df = pd.concat( sample_df_lst ).reset_index()
+    merged_df.drop('index', axis=1, inplace=True)
+    merged_df.to_csv("merged_pcs.tsv",sep="\t",index=False)
+    return merged_df
+
+#create color dict
+def create_color_dict(df, labels):
+    populations = np.unique(df[labels])
+    colors = {label: color for color,label in zip(populations, ['red', 'blue', 'green', 'yellow', 'pink'])}
+    colordict = dict(zip(populations, colors))
+    colordict["Study"] = "black"
+    df["Color"] = df[labels].apply(lambda x: colordict.get(x))
+    return df
 
 # Scatter plot function
-def scatter_plot_pc(reference, labels, study, figure_name, pc_x, pc_y, ax=None):
-    populations = np.unique(labels)
+def scatter_plot_pc(df, pc_x, pc_y, labels, figure_name):
+    fig, ax = plt.subplots(figsize=(10, 10))
+    populations = np.unique(df[labels])
     for pop in populations:
-        idx = labels == pop
-        ax.scatter(reference[idx, pc_x], reference[idx, pc_y], label=pop, alpha=0.7)
+        if pop == "Study":
+            marker = "^"
+        else:
+            marker = "."
+        idx = df[labels] == pop
+        ax.scatter(df[pc_x][idx], df[pc_y][idx], c=df["Color"][idx], marker=marker, label=pop)
 
-    ax.scatter(study[:, pc_x], study[:, pc_y], color='black', marker='x', label='Study', alpha=0.7)
-    ax.set_xlabel(f"PC{pc_x + 1}")
-    ax.set_ylabel(f"PC{pc_y + 1}")
     ax.set_title(figure_name)
     ax.legend()
-    ax.grid(True)
-    ax.savefig(figure_name+'.png') 
+    ax.set_xlabel(pc_x)
+    ax.set_ylabel(pc_y)
+    fig.savefig(figure_name+'.png')
+    return fig
+
   
-def scatter_plot_pc3d( ax=None):
-    populations = np.unique(labels)
+def scatter_plot_pc3d(df, pc_x, pc_y, pc_z, labels, figure_name):
+    fig = plt.figure()
+
+    ax = fig.add_subplot(projection='3d')
+    populations = np.unique(df[labels])
     for pop in populations:
-        idx = labels == pop
-        ax.scatter(reference[idx, pc_x], reference[idx, pc_y], label=pop, alpha=0.7) 
+        if pop == "Study":
+            marker = "^"
+        else:
+            marker = "."
+        idx = df[labels] == pop
+        ax.scatter(df[pc_x][idx], df[pc_y][idx], df[pc_z][idx], c=df["Color"][idx], marker=marker, label=pop)
 
-    ax.add_subplot(projection='3d')
-    ax.scatter(xs, ys, zs, marker=m)
-    ax.set_xlabel('X Label')
-    ax.set_ylabel('Y Label')
-    ax.set_zlabel('Z Label')
+    ax.set_title(figure_name)
+    ax.set_xlabel(pc_x)
+    ax.set_ylabel(pc_y)
+    ax.set_zlabel(pc_z)
+    fig.savefig(figure_name+'.png')
+    return fig
 
-# Main plotting
-reference, population_labels, study = generate_data()
-population_labels = np.array(population_labels) 
-
-fig, axes = plt.subplots(2, 2, figsize=(12, 10))
-
-# PC1 vs PC2
-scatter_plot_pc(reference, population_labels, study, "PC1 vs PC2", 0, 1, ax=axes[0, 0])
-
-# PC2 vs PC3
-scatter_plot_pc(reference, population_labels, study, "PC2 vs PC3", 1, 2, ax=axes[0, 1])
-
-# PC3 vs PC4
-scatter_plot_pc(reference, population_labels, study, "PC3 vs PC4", 2, 3, ax=axes[1, 0])
-
-# PC1 vs PC2 vs PC3 (3D)
-ax3d = fig.add_subplot(2, 2, 4, projection='3d')
-scatter_plot_pc3d(reference, population_labels, study, "PC1 vs PC2 vs PC3", 0, 1, 2, ax=ax3d)
-
-plt.tight_layout()
-plt.show()
-
+def plot_graphs(ref,ancestry_list):
+    # Main plotting
+    merged_df = connect_ancestry_ref(ancestry_list, ref)
+    colored_df = create_color_dict(merged_df, "label") 
+    # PC1 vs PC2
+    scatter_plot_pc(colored_df, "PC1", "PC2", "label", "PC1_vs_PC2")
+    # PC2 vs PC3
+    scatter_plot_pc(colored_df, "PC2", "PC3", "label", "PC2_vs_PC3")
+    # PC3 vs PC4
+    scatter_plot_pc(colored_df, "PC3", "PC4", "label", "PC3_vs_PC4")
+    # PC1 vs PC2 vs PC3 (3D)
+    scatter_plot_pc3d(colored_df, "PC1", "PC2", "PC3", "label", "PC1_vs_PC2_vs_PC3")
+    
 def main():
     parser = argparse.ArgumentParser(description="Process an array of files.")
     parser.add_argument("--ancestry_pcs", required=True, help="Comma-separated list of ancestry pcs path")
@@ -62,7 +98,8 @@ def main():
     args = parser.parse_args()
 
     ancestry_list = args.ancestry_pcs.split(",")
-    ref = args.merged_refs()
+    ref = args.merged_refs
+    plot_graphs(ref,ancestry_list)
 
 if __name__ == "__main__":
     main()

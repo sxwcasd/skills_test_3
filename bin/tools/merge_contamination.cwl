@@ -1,5 +1,6 @@
 cwlVersion: v1.0
 class: CommandLineTool
+id: merge_contaminations
 doc: Use paste to merge files horizontally.
 requirements:
   - class: InlineJavascriptRequirement
