@@ -4,6 +4,7 @@ id: plot_pcs_label_by_samples
 requirements:
   - class: DockerRequirement
     dockerPull: sxwcasd/docker_playground
+  - class: InlineJavascriptRequirement
     
 
 inputs:
@@ -22,9 +23,6 @@ inputs:
     type:
       type: array
       items: File
-    inputBinding:
-      prefix: --ancestry_pcs
-      position: 3
 
 outputs:
   pc_plots:
@@ -40,3 +38,10 @@ outputs:
       glob: "*.tsv"
 
 baseCommand: [python3]
+
+arguments:
+  - valueFrom: |
+      $(inputs.ancestry_pcs.map(f => f.path).join(" "))
+    prefix: --ancestry_pcs
+    position: 3
+    shellQuote: false

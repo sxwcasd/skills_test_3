@@ -1,0 +1,10 @@
+{
+  "script": {
+    "class": "File",
+    "path": "/Users/linghaosong/Desktop/Linghao/GIT/cerc_test/skills_test_3/bin/python/assign_label.py"
+  },
+  "merged_df":{
+    "class": "File",
+    "path": "/Users/linghaosong/Desktop/Linghao/GIT/cerc_test/test/merged_pcs.tsv"
+  }
+}

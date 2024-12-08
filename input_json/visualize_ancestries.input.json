@@ -1,16 +1,16 @@
 {
   "script": {
     "class": "File",
-    "path": "/mnt/SCRATCH/linghao/cerc_assignment/skills_test_3_linghao/bin/python/pca_ancestry.py"
+    "path": "/Users/linghaosong/Desktop/Linghao/GIT/cerc_test/skills_test_3/bin/python/pca_ancestry.py"
   },
   "merged_refs":{
     "class": "File",
-    "path": "/mnt/SCRATCH/linghao/cerc_assignment/skills_test_3_linghao/test/merged_refs.txt"
+    "path": "/Users/linghaosong/Desktop/Linghao/GIT/cerc_test/test/merged_refs.txt"
   },
   "ancestry_pcs":[
     {
       "class": "File",
-      "path": "/mnt/SCRATCH/linghao/cerc_assignment/skills_test_3_linghao/test/HGDP00082.GRCh38.low_coverage.Ancestry"
+      "path": "/Users/linghaosong/Desktop/Linghao/GIT/cerc_test/test/HGDP00082.GRCh38.low_coverage.Ancestry"
     }
   ]
 }

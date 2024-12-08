@@ -97,7 +97,7 @@ def main():
     parser.add_argument("--merged_refs", required=True, help="merged 1000 genome reference file")
     args = parser.parse_args()
 
-    ancestry_list = args.ancestry_pcs.split(",")
+    ancestry_list = args.ancestry_pcs.split(" ")
     ref = args.merged_refs
     plot_graphs(ref,ancestry_list)
 
