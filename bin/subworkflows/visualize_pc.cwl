@@ -3,10 +3,16 @@ doc: Visualizes estimated ancestry PCs
 class: Workflow
 
 inputs:
-  assign_label:
+  assign_labels_script:
     type: File
-  pca_ancestry:
+    default: 
+      type: File 
+      path: ../python/assign_label.py
+  pca_ancestry_script:
     type: File
+    default:
+      type: File
+      path: ../python/pca_ancestry.py
   ref_labels:
     type: File
   ref_pcs:
@@ -17,9 +23,9 @@ inputs:
       items: File
 
 outputs:
-  merged_ancestries:
+  populations:
     type: File
-    outputSource: visualize_ancestries/merged_pcs
+    outputSource: assign_labels/populations
 
   pc_plots:
     outputSource: visualize_ancestries/pc_plots
@@ -58,6 +64,6 @@ steps:
   assign_labels:
     run: ../tools/assign_labels.cwl
     in:
-      script: assign_label
+      script: assign_labels_script
       merged_df: visualize_ancestries/merged_pcs
     out: [ populations ] 

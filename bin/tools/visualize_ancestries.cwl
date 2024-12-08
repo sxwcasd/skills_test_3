@@ -3,7 +3,8 @@ class: CommandLineTool
 id: plot_pcs_label_by_samples
 requirements:
   - class: DockerRequirement
-    dockerPull: docker.osdc.io/ncigdc/absolute-python-tool
+    dockerPull: sxwcasd/docker_playground
+    
 
 inputs:
   script:

@@ -1,9 +1,11 @@
+#!/usr/bin/env cwl-runner
+
 cwlVersion: v1.0
 class: CommandLineTool
 id: plot_pcs_label_by_samples
 requirements:
   - class: DockerRequirement
-    dockerPull: python3.9-slim
+    dockerPull: sxwcasd/docker_playground
 
 inputs:
   script:
@@ -21,6 +23,6 @@ outputs:
   populations:
     type: File
     outputBinding:
-      glob: "population.tsv"
+      glob: "Populations.txt"
 
 baseCommand: [python3]
