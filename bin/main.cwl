@@ -1,6 +1,8 @@
 cwlVersion: v1.0
 class: Workflow
 id: predict_label_from_pca
+requirements:
+  - class: SubworkflowFeatureRequirement
 
 inputs:
   input_directory:
@@ -28,7 +30,7 @@ outputs:
     outputSource: VisualizePc/populations
   contamination:
     type: File
-    outputSource: MergeContamination/merged_file
+    outputSource: EstimateContamination/contamination
 
 steps:
   EstimateContamination:
@@ -41,9 +43,9 @@ steps:
     out: [ ancestry, contamination ]
 
   VisualizePc:
-    run: ../subworkflows/visualize_pc.cwl
+    run: ./subworkflows/visualize_pc.cwl
     in:
-      ref_labels: 
-      ref_pcs:  
+      ref_labels: ref_labels
+      ref_pcs: ref_pcs
       ancestries: EstimateContamination/ancestry
     out: [populations, pc_plots]

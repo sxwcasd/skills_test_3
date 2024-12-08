@@ -56,7 +56,7 @@ steps:
   visualize_ancestries:
     run: ../tools/visualize_ancestries.cwl
     in:
-      script: pca_ancestry 
+      script: pca_ancestry_script 
       merged_refs: paste_pc_label/merged_refs
       ancestry_pcs: ancestries
     out: [ pc_plots , merged_pcs]

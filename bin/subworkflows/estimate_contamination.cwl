@@ -2,7 +2,7 @@ cwlVersion: v1.0
 class: Workflow
 id: estimate_contamination_wf
 requirements:
-  - class: ScatterFeatureRequirement: {}
+  - class: ScatterFeatureRequirement
 
 inputs:
   input_directory:
@@ -16,11 +16,14 @@ inputs:
 
 outputs:
   ancestry:
-    type: File[]
+    type: 
+      type: array
+      items: File
     outputSource: VerifyBamID/ancestries
+      
   contamination:
-    type: File[]
-    outputSource: VerifyBamID/contaminations
+    type: File
+    outputSource: ExtractFreemix/contamination
 
 steps:
   ListFiles:
